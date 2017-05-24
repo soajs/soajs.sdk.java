@@ -88,9 +88,9 @@ public class Utils {
         if (headerParams == null || headerParams.length() == 0) {
             return header;
         }
-
+        
         Vector<String> allKeysAndValues = getAllKeysAndValuesFromJsonObject(headerParams);
-
+        
         // it has at least 1
         header = "?" + allKeysAndValues.get(0);
 

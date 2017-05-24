@@ -56,12 +56,18 @@ public class SoajsSdkTester {
 //        ApiInterface soajsApi = new Api(cnx);
 
         // or your can initialize it using the controller port and the service name
-        String host = "192.168.5.108";
+        String host = "192.168.5.120";
         String controllerPort = "4000";
-        String serviceName = "project";
+        String serviceName = "soajstestsdkproject";
 
         SoajsConnection cnx = new SoajsConnection(false, host, controllerPort, serviceName);
         SoajsSdkInterface soajsSdk = new SoajsSdk(cnx);
+        
+        // u can login using a username and a password
+        soajsSdk.login("owner", "password");
+        // or using a refresh token
+//        soajsSdk.login("4ad38f12c7ed559a00b6ac6d3c83e1219896804d");
+        
         // now soajs sdk is ready to send requests and to get responses
         
         try {
@@ -72,10 +78,12 @@ public class SoajsSdkTester {
 
             // DELETE example
             JSONObject outputDelete = soajsSdk.delete("soajsTestSdkDel", headers);
+            viewOutput(outputDelete);
 
             // GET example
             JSONObject outputGet = soajsSdk.get("soajsTestSdkGet", headers);
-
+            viewOutput(outputGet);
+            
             // set your body
             JSONObject postBody = new JSONObject();
             postBody.put("bodyParam1", "bp1");
@@ -83,14 +91,13 @@ public class SoajsSdkTester {
 
             // POST example
             JSONObject outputPost = soajsSdk.post("soajsTestSdkPost", headers, postBody);
+            viewOutput(outputPost);
 
             // PUT example
             JSONObject outputPut = soajsSdk.put("soajsTestSdkPut", headers, postBody);
-
-            viewOutput(outputGet);
-            viewOutput(outputDelete);
-            viewOutput(outputPost);
             viewOutput(outputPut);
+
+            
 
         } catch (Exception e) {
             System.err.println("Error thrown : ");
@@ -102,7 +109,7 @@ public class SoajsSdkTester {
         if (output.getBoolean("error")) {
             System.out.println(output.getString("errorMessage"));
         } else {
-            System.out.println(output.getJSONObject("apiResonse").toString());
+            System.out.println(output.getJSONObject("apiResponse").toString());
         }
     }
 }

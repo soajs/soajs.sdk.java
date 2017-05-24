@@ -6,6 +6,10 @@ import org.json.JSONObject;
  * @author Etienne on 5/22/2017 Copyright © 2017 SOAJS. All rights reserved.
  */
 public interface SoajsSdkInterface {
+    
+    public boolean login(String username, String password);
+    
+    public boolean login(String refreshToken);
 
     public JSONObject get(String path, JSONObject headerParams);
 

@@ -46,6 +46,11 @@ public class SoajsConnection {
 
         this.baseUrl = Utils.fetchBaseUrl(secureProtocol, host, port);
     }
+    
+    public String toString(){
+        String output = this.baseUrl;
+        return output;
+    }
 
     /**
      * SETTORS AND GETTORS
