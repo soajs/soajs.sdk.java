@@ -106,7 +106,7 @@ public class SoajsSdk implements SoajsSdkInterface {
      * @param response
      * @return 
      */
-    public JSONObject filterResponse(JSONObject response) {
+    private JSONObject filterResponse(JSONObject response) {
         boolean error = response.getBoolean("error");
         if (!error) { // error on controllers level
             JSONObject apiResponse = response.getJSONObject("apiResponse");
