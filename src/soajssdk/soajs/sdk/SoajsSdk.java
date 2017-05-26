@@ -45,22 +45,25 @@ public class SoajsSdk implements SoajsSdkInterface {
         setTokens(username, password, null);
 //        this.access_token="4b696935fa7d3d1d7ce4a374a70a1a42eaafc007"; // expired token test
 //        this.refresh_token="8e70709a79f8f4226b2e84405608401b0cfea586";
-        // TODO handle errors
         return true;
     }
 
     public boolean login(String refreshToken) {
-//        System.out.println("logging in using refresh token .......");
-        setAuthorization();
-        setTokens(null, null, refreshToken);
-        // TODO handle errors
+        setAuthorization(); // will throw an error if it wasnt set
+        setTokens(null, null, refreshToken); // will throw an error if it wasn't set
         return true;
     }
 
     private void setAuthorization() {
         JSONObject authorizationResponse = getOrDelete("authorization", null, "GET", oauthConnection, true);
-        JSONObject apiResponse = authorizationResponse.getJSONObject("apiResponse");
-        this.authorization = apiResponse.getString("data");
+        authorizationResponse = filterResponse(authorizationResponse);
+        
+        if(authorizationResponse.getBoolean("error")){
+            throw new Error(authorizationResponse.getString("message"));
+        }else{
+            JSONObject apiResponse = authorizationResponse.getJSONObject("apiResponse");
+            this.authorization = apiResponse.getString("data");
+        }
     }
 
     private void setTokens(String username, String password, String refreshToken) {
@@ -97,7 +100,6 @@ public class SoajsSdk implements SoajsSdkInterface {
     }
 
     /**
-     * TODO
      * filter response : add an error flag and show error directly in case of error, if not show response
      * ex1: error: true, code :..., message: '...;
      * ex2: error: false, apiResonse: {}
@@ -117,11 +119,13 @@ public class SoajsSdk implements SoajsSdkInterface {
                 soajsErrorsDetailsAt0.put("error", true); // add error flag
                 return soajsErrorsDetailsAt0;
             } else {
-                // TODO add error flag
                 return response; // valid response
             }
         } else {
-            return response; // controller's error // already have an error flag
+            // set controllers error under message instead of errorMessage
+            response.put("message", response.getString("errorMessage"));
+            response.remove("errorMessage");
+            return response;
         }
     }
 

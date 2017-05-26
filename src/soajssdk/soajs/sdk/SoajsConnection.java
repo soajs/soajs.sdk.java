@@ -14,6 +14,7 @@ public class SoajsConnection {
     private String controllerPort; // controller's port
     private String serviceName; // service name
     private String baseUrl; // base URL fetched
+    private boolean usingController;
 
     /**
      * Constructor: initialize the connection through controller
@@ -28,8 +29,9 @@ public class SoajsConnection {
         this.controllerPort = controllerPort;
         this.serviceName = serviceName;
         this.secureProtocol = secureProtocol;
+        this.usingController = true;
 
-        this.baseUrl = Utils.fetchBaseUrlUsingController(secureProtocol, host, controllerPort, serviceName);
+        fetchBaseUrl();
     }
 
     /**
@@ -43,13 +45,22 @@ public class SoajsConnection {
         this.host = host;
         this.port = port;
         this.secureProtocol = secureProtocol;
+        this.usingController = false;
 
-        this.baseUrl = Utils.fetchBaseUrl(secureProtocol, host, port);
+        fetchBaseUrl();
     }
-    
-    public String toString(){
-        String output = this.baseUrl;
-        return output;
+
+    private void fetchBaseUrl() {
+        if (usingController) {
+            this.baseUrl = Utils.fetchBaseUrlUsingController(secureProtocol, host, controllerPort, serviceName);
+        } else {
+            this.baseUrl = Utils.fetchBaseUrl(secureProtocol, host, port);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return this.baseUrl;
     }
 
     /**
@@ -69,6 +80,7 @@ public class SoajsConnection {
 
     public void setSecureProtocol(boolean secureProtocol) {
         this.secureProtocol = secureProtocol;
+        fetchBaseUrl();
     }
 
     public String getHost() {
@@ -77,6 +89,7 @@ public class SoajsConnection {
 
     public void setHost(String host) {
         this.host = host;
+        fetchBaseUrl();
     }
 
     public String getPort() {
@@ -85,6 +98,7 @@ public class SoajsConnection {
 
     public void setPort(String port) {
         this.port = port;
+        fetchBaseUrl();
     }
 
     public String getControllerPort() {
@@ -93,6 +107,7 @@ public class SoajsConnection {
 
     public void setControllerPort(String controllerPort) {
         this.controllerPort = controllerPort;
+        fetchBaseUrl();
     }
 
     public String getServiceName() {
@@ -101,6 +116,7 @@ public class SoajsConnection {
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+        fetchBaseUrl();
     }
 
     public String getBaseUrl() {
@@ -109,5 +125,14 @@ public class SoajsConnection {
 
     public void setBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+        fetchBaseUrl();
+    }
+
+    public boolean isUsingController() {
+        return usingController;
+    }
+
+    public void setUsingController(boolean usingController) {
+        this.usingController = usingController;
     }
 }

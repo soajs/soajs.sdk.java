@@ -56,7 +56,7 @@ public class SoajsSdkTester {
 //        ApiInterface soajsApi = new Api(cnx);
 
         // or your can initialize it using the controller port and the service name
-        String host = "192.168.5.120";
+        String host = "10.0.0.15";
         String controllerPort = "4000";
         String serviceName = "soajstestsdkproject";
 
@@ -77,8 +77,8 @@ public class SoajsSdkTester {
             headers.put("headerParam2", "hp2");
 
             // DELETE example
-            JSONObject outputDelete = soajsSdk.delete("soajsTestSdkDel", headers);
-            viewOutput(outputDelete);
+//            JSONObject outputDelete = soajsSdk.delete("soajsTestSdkDel", headers);
+//            viewOutput(outputDelete);
 
             // GET example
             JSONObject outputGet = soajsSdk.get("soajsTestSdkGet", headers);
@@ -90,12 +90,12 @@ public class SoajsSdkTester {
             postBody.put("bodyParam2", "bp2");
 
             // POST example
-            JSONObject outputPost = soajsSdk.post("soajsTestSdkPost", headers, postBody);
-            viewOutput(outputPost);
+//            JSONObject outputPost = soajsSdk.post("soajsTestSdkPost", headers, postBody);
+//            viewOutput(outputPost);
 
             // PUT example
-            JSONObject outputPut = soajsSdk.put("soajsTestSdkPut", headers, postBody);
-            viewOutput(outputPut);
+//            JSONObject outputPut = soajsSdk.put("soajsTestSdkPut", headers, postBody);
+//            viewOutput(outputPut);
 
             
 
